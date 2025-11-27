@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: lab-equipment-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ??? lab_equipment_db ????????????
+    url: jdbc:mysql://localhost:3306/lab_equipment_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123123  # ????????? 123123
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# MyBatis Plus ??
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # ??????SQL
+    map-underscore-to-camel-case: true # ????????
+  global-config:
+    db-config:
+      id-type: auto # ????
