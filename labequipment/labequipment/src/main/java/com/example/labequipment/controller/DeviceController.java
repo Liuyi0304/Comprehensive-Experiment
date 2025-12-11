@@ -1,5 +1,6 @@
 package com.example.labequipment.controller;
 import com.example.labequipment.common.result.Result;
+import com.example.labequipment.dto.DeviceAddDTO;
 import com.example.labequipment.dto.DeviceTransferDTO;
 import com.example.labequipment.entity.Device;
 import com.example.labequipment.service.IDeviceService;
@@ -14,9 +15,17 @@ import java.util.List;
 public class DeviceController {
     private final IDeviceService deviceService;
 
+    // 获取列表
     @GetMapping("/list")
     public Result<List<Device>> list() {
         return Result.success(deviceService.list());
+    }
+
+    // 新增设备
+    @PostMapping("/add")
+    public Result<String> addDevice(@RequestBody @Valid DeviceAddDTO dto) {
+        deviceService.addDevice(dto);
+        return Result.success("设备录入成功");
     }
 
     @PostMapping("/transfer")
@@ -38,4 +47,6 @@ public class DeviceController {
         deviceService.returnDevice(deviceId);
         return Result.success("归还成功");
     }
+
+
 }
