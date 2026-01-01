@@ -94,16 +94,34 @@
               
               <!-- 管理员专有的敏感操作 -->
               <template v-if="isAdmin && row.status !== 'scrapped'">
-                <el-tooltip :content="row.status === 'under_repair' ? '维修中不可调拨' : '调拨'" placement="top">
-                  <span>
-                    <el-button link type="warning" icon="Switch" :disabled="row.status === 'under_repair'" @click="openTransferDialog(row)" />
-                  </span>
-                </el-tooltip>
-                <el-tooltip :content="row.status === 'under_repair' ? '维修中不可报废' : '报废'" placement="top">
-                  <span>
-                    <el-button link type="danger" icon="Delete" :disabled="row.status === 'under_repair'" @click="openScrapDialog(row)" />
-                  </span>
-                </el-tooltip>
+               <el-tooltip 
+              :content="row.status !== 'in_stock' ? '仅【在库】设备可调拨' : '调拨'" 
+              placement="top"
+            >
+              <span>
+                <el-button 
+                  link 
+                  type="warning" 
+                  icon="Switch" 
+                  :disabled="row.status !== 'in_stock'" 
+                  @click="openTransferDialog(row)" 
+                />
+              </span>
+            </el-tooltip>
+             <el-tooltip 
+  :content="row.status !== 'in_stock' ? '仅【在库】设备可报废' : '报废'" 
+  placement="top"
+>
+  <span>
+    <el-button 
+      link 
+      type="danger" 
+      icon="Delete" 
+      :disabled="row.status !== 'in_stock'" 
+      @click="openScrapDialog(row)" 
+    />
+  </span>
+</el-tooltip>
               </template>
             </div>
           </template>
