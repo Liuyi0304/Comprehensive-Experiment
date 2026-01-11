@@ -1,0 +1,32 @@
+<view class="container">
+  <view class="header">
+    <view class="title">实验室设备管理系统</view>
+    <view class="subtitle">请使用您的账号登录以继续</view>
+  </view>
+
+  <view class="form-area">
+    <view class="input-item">
+      <text class="label">用户名</text>
+      <input class="input" 
+             placeholder="请输入用户名/工号" 
+             placeholder-class="placeholder"
+             bindinput="onUsernameInput" />
+    </view>
+
+    <view class="input-item">
+      <text class="label">密码</text>
+      <input class="input" 
+             password 
+             placeholder="请输入登录密码" 
+             placeholder-class="placeholder"
+             bindinput="onPasswordInput" />
+    </view>
+
+    <button class="login-btn" bindtap="handleLogin">立即登录</button>
+  </view>
+
+  <view class="footer">
+    <text class="footer-link">忘记密码？</text>
+    <text class="footer-link">联系管理员</text>
+  </view>
+</view>

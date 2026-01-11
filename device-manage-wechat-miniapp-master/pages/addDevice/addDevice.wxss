@@ -1,0 +1,61 @@
+page { background-color: #f7f8fa; color: #333; }
+.page-container { padding-bottom: 60rpx; }
+
+/* 顶部装饰 */
+.header-wave {
+  background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+  height: 280rpx;
+  padding: 40rpx;
+  color: white;
+}
+.header-title { font-size: 44rpx; font-weight: bold; display: block; margin-bottom: 10rpx; }
+.header-subtitle { font-size: 24rpx; opacity: 0.8; }
+
+/* 卡片样式 */
+.form-card {
+  background: white;
+  margin: -60rpx 30rpx 30rpx;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0,0,0,0.05);
+}
+.card-title { font-size: 28rpx; font-weight: bold; color: #0052d4; margin-bottom: 30rpx; display: flex; align-items: center; }
+.icon { margin-right: 10rpx; }
+
+/* 表单项 */
+.form-group { margin-bottom: 30rpx; }
+.form-row { display: flex; gap: 20rpx; }
+.half { flex: 1; }
+.label { font-size: 24rpx; color: #888; margin-bottom: 12rpx; display: block; }
+.input, .picker-box {
+  background: #f9f9f9;
+  height: 88rpx;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  border: 1rpx solid #eee;
+}
+.ph { color: #ccc; }
+
+/* 状态标签 */
+.status-picker { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 20rpx 24rpx; border-radius: 12rpx; border: 1rpx solid #eee;}
+.status-tag { padding: 4rpx 20rpx; border-radius: 8rpx; font-size: 24rpx; }
+.tag-in_stock { background: #e1f5fe; color: #039be5; }
+.tag-in_use { background: #e8f5e9; color: #43a047; }
+.tag-repairing { background: #fff3e0; color: #fb8c00; }
+.tag-scrapped { background: #ffebee; color: #e53935; }
+
+/* 按钮 */
+.btn-area { padding: 40rpx 30rpx; }
+.btn-submit {
+  background: linear-gradient(to right, #0052d4, #4364f7);
+  color: white;
+  height: 100rpx;
+  line-height: 100rpx;
+  border-radius: 50rpx;
+  font-weight: bold;
+  box-shadow: 0 10rpx 20rpx rgba(67, 100, 247, 0.3);
+}
+.btn-cancel { margin-top: 30rpx; background: none; color: #888; font-size: 28rpx; border: none; }

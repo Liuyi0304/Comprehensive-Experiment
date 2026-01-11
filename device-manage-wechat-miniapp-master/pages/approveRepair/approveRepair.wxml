@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="page-header">
+    <view class="title">报修审批中心</view>
+    <view class="subtitle">共 {{repairList.length}} 条待处理申请</view>
+  </view>
+
+  <view class='empty-base {{ repairList.length == 0 ? "empty-show" : "empty-hide"}}'>
+    <image class='empty-image' src='../images/empty1.png'></image>
+    <view class='empty-desc'>目前没有需要审批的报修</view>
+  </view>
+
+  <block wx:for="{{repairList}}" wx:key="id">
+    <view class="repair-card">
+      <view class="card-header">
+        <view class="device-main">
+          <image src="../images/device_other.png" class="device-icon"></image>
+          <text class="device-name">{{item.deviceName || '未知设备'}}</text>
+        </view>
+        <view class="status-badge">待审批</view>
+      </view>
+
+      <view class="card-body">
+        <view class="info-grid">
+          <view class="info-item">
+            <text class="label">设备编号：</text>
+            <text class="value">{{item.deviceAssetNumber || item.deviceId}}</text>
+          </view>
+          <view class="info-item">
+            <text class="label">报修人：</text>
+            <text class="value">{{item.reporterName || ('ID:' + item.reporterId)}}</text>
+          </view>
+          <view class="info-item">
+            <text class="label">报修时间：</text>
+            <text class="value">{{item.reportedTime}}</text>
+          </view>
+        </view>
+
+        <view class="description-area">
+          <view class="label">故障描述：</view>
+          <view class="content">{{item.description || '无描述'}}</view>
+        </view>
+      </view>
+
+      <view class="card-footer">
+        <button 
+          class="btn-assign" 
+          size="mini" 
+          type="primary" 
+          catchtap="handleAssign" 
+          data-id="{{item.id}}" 
+          data-name="{{item.deviceName}}"
+          data-deviceid="{{item.deviceId}}">指派给实验室管理员</button>
+
+          <button 
+          class="btn-assign" 
+          size="mini" 
+          type="primary" 
+          catchtap="handleAssignreject" 
+          data-id="{{item.id}}" 
+          data-name="{{item.deviceName}}"
+          data-deviceid="{{item.deviceId}}">拒绝</button>
+
+      </view>
+    </view>
+  </block>
+</view>

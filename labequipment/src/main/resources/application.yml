@@ -7,9 +7,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     # ??? lab_equipment_db ????????????
-    url: jdbc:mysql://localhost:3306/lab_equipment_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/bighomework?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: 123456  # ????????? 123123
+    password: 611  # ????????? 123123
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

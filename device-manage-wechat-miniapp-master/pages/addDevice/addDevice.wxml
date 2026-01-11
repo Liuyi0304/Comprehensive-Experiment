@@ -1,0 +1,88 @@
+<view class="page-container">
+  <view class="header-wave">
+    <view class="header-content">
+      <text class="header-title">{{isEdit ? '编辑设备档案' : '新增设备资产'}}</text>
+      <text class="header-subtitle">请准确填写设备各项参数，确保库存数据实时准确</text>
+    </view>
+  </view>
+
+  <form bindsubmit="submitForm">
+    <view class="form-card">
+      <view class="card-title"><text class="icon">🏷️</text> 核心识别</view>
+      <view class="form-group">
+        <text class="label">设备名称</text>
+        <input name="name" class="input" value="{{device.name}}" placeholder="如：高性能工作站" placeholder-class="ph" />
+      </view>
+      <view class="form-group">
+        <text class="label">资产编号 (Asset Number)</text>
+        <input name="assetNumber" class="input" value="{{device.assetNumber}}" placeholder="请输入唯一资产编号" placeholder-class="ph" />
+      </view>
+    </view>
+
+    <view class="form-card">
+      <view class="card-title"><text class="icon">🏢</text> 归属配置</view>
+      <view class="form-group">
+        <text class="label">设备分类</text>
+        <picker bindchange="bindCategoryChange" value="{{categoryIndex}}" range="{{categoryList}}" range-key="name">
+          <view class="picker-box {{categoryIndex !== null ? '' : 'empty'}}">
+            {{categoryIndex !== null ? categoryList[categoryIndex].name : '点击选择分类'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="label">所属实验室</text>
+        <picker bindchange="bindLabChange" value="{{labIndex}}" range="{{labList}}" range-key="name">
+          <view class="picker-box {{labIndex !== null ? '' : 'empty'}}">
+            {{labIndex !== null ? labList[labIndex].name : '点击选择实验室'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-card">
+      <view class="card-title"><text class="icon">⚙️</text> 规格参数</view>
+      <view class="form-row">
+        <view class="form-group half">
+          <text class="label">品牌/厂商</text>
+          <input name="manufacturer" class="input" value="{{device.manufacturer}}" placeholder="厂商名称" placeholder-class="ph" />
+        </view>
+        <view class="form-group half">
+          <text class="label">具体型号</text>
+          <input name="model" class="input" value="{{device.model}}" placeholder="型号" placeholder-class="ph" />
+        </view>
+      </view>
+      <view class="form-group">
+        <text class="label">采购价值 (元)</text>
+        <input name="price" type="digit" class="input" value="{{device.price}}" placeholder="0.00" placeholder-class="ph" />
+      </view>
+    </view>
+
+    <view class="form-card">
+      <view class="card-title"><text class="icon">📅</text> 状态与日期</view>
+      <view class="form-group">
+        <text class="label">采购日期</text>
+        <picker mode="date" bindchange="bindDateChange" value="{{device.purchaseDate}}">
+          <view class="picker-box {{device.purchaseDate ? '' : 'empty'}}">
+            {{device.purchaseDate || '请选择日期'}}
+          </view>
+        </picker>
+      </view>
+      <view class="form-group">
+        <text class="label">当前运营状态</text>
+        <picker bindchange="bindStatusChange" value="{{statusIndex}}" range="{{statusRange}}">
+          <view class="status-picker">
+            <text class="status-tag tag-{{statusRangeEn[statusIndex]}}">{{statusRange[statusIndex]}}</text>
+            <text class="arrow">▼</text>
+          </view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="btn-area">
+      <button class="btn-submit" form-type="submit" hover-class="btn-hover">
+        {{isEdit ? '更新档案' : '确认入库'}}
+      </button>
+      <button wx:if="{{isEdit}}" class="btn-cancel" bindtap="goBack">取消修改</button>
+    </view>
+  </form>
+</view>

@@ -1,5 +1,4 @@
-package  com.example.labequipment.common.config;
-
+package com.example.labequipment.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

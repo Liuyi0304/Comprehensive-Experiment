@@ -1,8 +1,8 @@
 package com.example.labequipment.service;
-
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.labequipment.dto.RepairRecordDTO;
 import com.example.labequipment.dto.RepairRecordVO;
+import com.example.labequipment.dto.RepairReportDTO;
 import com.example.labequipment.entity.RepairRecord;
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,4 +21,8 @@ public interface IRepairService extends IService<RepairRecord> {
     void completeRepair(Long repairId, String solution, BigDecimal cost, String outcome);
     // 列表查询
     List<RepairRecordVO> getRepairList(String keyword);
+
+    List<RepairRecordVO> getWRepairList(Long userId, String keyword);
+
+    List<RepairRecord> getTasksByHandler(Long handlerId);
 }

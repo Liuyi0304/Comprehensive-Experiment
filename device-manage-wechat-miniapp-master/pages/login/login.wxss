@@ -1,0 +1,77 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  padding: 40rpx;
+  background-color: #ffffff;
+}
+
+.header {
+  margin-top: 100rpx;
+  margin-bottom: 80rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.form-area {
+  width: 100%;
+}
+
+.input-item {
+  margin-bottom: 40rpx;
+  border-bottom: 1rpx solid #eeeeee; /* 底部横线风格，更像Web */
+  padding: 20rpx 0;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+  display: block;
+}
+
+.input {
+  height: 80rpx;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.placeholder {
+  color: #ccc;
+}
+
+.login-btn {
+  margin-top: 60rpx;
+  width: 100% !important;
+  height: 90rpx;
+  line-height: 90rpx;
+  background: linear-gradient(to right, #07c160, #06ad56); /* 渐变绿 */
+  color: #fff;
+  border-radius: 45rpx;
+  font-size: 32rpx;
+  font-weight: 500;
+  padding: 0;
+}
+
+.footer {
+  margin-top: auto;
+  margin-bottom: 60rpx;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20rpx;
+}
+
+.footer-link {
+  font-size: 26rpx;
+  color: #576b95; /* 微信经典链接蓝 */
+}

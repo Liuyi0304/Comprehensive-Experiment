@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface IDeviceService extends IService<Device> {
 
+    /**
+     * 小程序依靠实验室ID查询设备列表
+     */
+    List<Device> findDevicesByLabId(Long labId);
+
     // === 原有业务接口 ===
     /**
      * 查询设备列表 (带权限)
@@ -47,4 +52,6 @@ public interface IDeviceService extends IService<Device> {
      * 管理员直接报废 (配合Controller)
      */
     void adminDirectScrap(Long deviceId);
+
+    Long findManagerIdByDeviceId(Long deviceId);
 }

@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/approveRepair/approveRepair",
+    "pages/approveList/approveList",
+    "pages/index/index",
+    "pages/handleapproveRepair/handleapproveRepair",
+    "pages/menu/menu",
+    "pages/admin/admin",
+    "pages/search/search",
+    "pages/user/user",
+    "pages/device/device",
+    "pages/myDevices/myDevices",
+    "pages/borrowedDevices/borrowedDevices",
+    "pages/log/log",
+    "pages/group/group",
+    "pages/addDevice/addDevice",
+    "pages/manager/manager",
+    "pages/myuser/myuser"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#576b95",
+    "navigationBarTitleText": "WeChat",
+    "navigationBarTextStyle": "black"
+  }
+}

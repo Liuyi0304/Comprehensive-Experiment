@@ -1,6 +1,7 @@
 package com.example.labequipment.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.labequipment.common.exception.CustomException;
@@ -186,5 +187,42 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         device.setStatus("scrapped");
         device.setScrappedAt(LocalDateTime.now()); // 记录报废时间
         this.updateById(device);
+    }
+
+
+
+    /**
+     * 小程序依靠实验室ID查询设备列表
+     */
+    @Override
+    public List<Device> findDevicesByLabId(Long labId) {
+        // 创建查询条件
+        QueryWrapper<Device> queryWrapper = new QueryWrapper<>();
+        // 1. 匹配实验室ID
+        queryWrapper.eq("lab_id", labId);
+        // 2. 过滤掉已经报废的设备 (如果 status 存的是 "scrapped")
+        // 如果你需要显示所有设备，可以去掉这一行
+        queryWrapper.ne("status", "scrapped");
+        // 3. 按创建时间倒序排列，让新设备排在前面
+        queryWrapper.orderByDesc("created_at");
+        return deviceMapper.selectList(queryWrapper);
+    }
+
+    @Override
+    public Long findManagerIdByDeviceId(Long deviceId) {
+        // 1. 先查出设备信息，获取其所在的实验室 ID (labId)
+        Device device = this.getById(deviceId);
+        if (device == null || device.getLabId() == null) {
+            return null;
+        }
+
+        // 2. 在用户表中查找属于该实验室且角色为 'manager' 的用户
+        // 注意：这里假设每个实验室只有一个负责人
+        User manager = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getLabId, device.getLabId())
+                .eq(User::getRole, "manager")
+                .last("LIMIT 1")); // 保证只取一条
+
+        return manager != null ? manager.getId() : null;
     }
 }

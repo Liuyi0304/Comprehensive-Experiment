@@ -131,4 +131,27 @@ public class UsageRecordServiceImpl extends ServiceImpl<UsageRecordMapper, Usage
             }
         }
     }
+
+    public void endUsageByDevice(Long deviceId, Long userId) {
+        // 1. 查找该设备当前处于“使用中”的记录 (即 endTime 为空的记录)
+        UsageRecord record = this.lambdaQuery()
+                .eq(UsageRecord::getDeviceId, deviceId)
+                .isNull(UsageRecord::getEndTime)
+                .one();
+
+        if (record == null) {
+            throw new CustomException("该设备当前没有正在使用的记录");
+        }
+
+        // 2. 更新归还时间
+        record.setEndTime(LocalDateTime.now());
+        this.updateById(record);
+
+        // 3. 更新设备状态回“在库”
+        Device device = deviceMapper.selectById(deviceId);
+        if (device != null) {
+            device.setStatus("in_stock");
+            deviceMapper.updateById(device);
+        }
+    }
 }

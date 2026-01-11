@@ -1,0 +1,105 @@
+<view style='display: flex; flex-direction: column;'>
+  <view class="menu">
+    <image class="avatar" src="{{wxUserInfo ? wxUserInfo.avatarUrl : '../images/avatar.png'}}" background-size="cover"></image>
+    
+    <view class="vertical-line line-left"></view>
+    <image class="more" src="../images/more7.png" background-size="cover" bindtap='bindMore'></image>
+    <view class="vertical-line line-right"></view>
+
+    <input class='search' bindinput='bindSearchInput' bindconfirm="bindSearchConfirm" placeholder='搜索：设备编码/系统版本/型号/姓名等'></input>
+  </view>
+
+  <view class='page__bd_spacing ' style=' margin-top:100rpx;'>
+    <view class='item-container'>
+      <view class='item-base' bindtap='bindAddDevice'>
+        <view class='flex-row '>
+          <image class='item-logo' src='../images/my1.png'></image>
+          <view style='margin-left:8px;'>录入设备</view>
+        </view>
+        </view>
+
+      <view class='item-base' bindtap='bindApproveDevices'>
+        <view class="flex-row">
+          <image class='item-logo' src='../images/borrowed1.png'></image>
+          <view style='margin-left:8px;'>审批报废设备</view>
+        </view>
+        <view class="number-text" hidden='{{pendingCount > 0 ? "" : "hidden"}}'>({{pendingCount}}单)</view>
+      </view>
+    </view>
+    <view class='item-base' bindtap='bindApproveRepair'>
+        <view class="flex-row">
+          <image class='item-logo' src='../images/more7.png'></image>
+          <view style='margin-left:8px;'>审批报修设备</view>
+        </view>
+        <view class="number-text" hidden='{{pendingRepairCount > 0 ? "" : "hidden"}}'>({{pendingRepairCount}}单)</view>
+    </view>
+
+    <view class="weui-cells__title title {{devices.length == 0 ?'hide':''}}">系统库存，共{{devices.length}}台</view>
+
+    <view class='empty-base {{ showEmptyView ? "empty-show" : "empty-hide"}}'>
+      <image class='empty-image' src='../images/empty1.png'></image>
+      <view class='empty-desc'>暂无设备数据 </view>
+    </view>
+
+    <block wx:for="{{devices}}" wx:key="id" wx:for-index="index">
+      <view class="kind-list__item" bindtap='bindTapExpand' data-index="{{index}}">
+        <view style='padding:8px; display: flex;flex-direction: row;justify-content: space-between; '>
+          <view style='display: flex;flex-direction: column;width:100%;padding:10px;'>
+            <view style='display: flex;flex-direction: row; '>
+              <view>
+                <image src="{{'../images/' + (brandMap[item.brand] || 'device_other') + '.png'}}" class="item-logo" style='margin-top:6px;'></image>
+              </view>
+              <view style='font-size:20px;margin-left:10px;'>{{item.name}}</view>
+            </view>
+            
+            <view style='margin-top:8px;font-size:12px; display: flex;flex-direction: row;color:#666;'>
+              <view class='label'>{{item.model}}</view>
+              <view class='label'>{{item.assetNumber}}</view>
+              <view class='label'>{{item.manufacturer}}</view>
+            </view>
+          </view>
+
+          <view style='display: flex;flex-direction: row;vertical-align: middle;align-items: center;'>
+            <view wx:if="{{item.status == 0}}">
+              <view class='status-base status-borrowing'>在库</view>
+            </view>
+            <view wx:elif="{{item.status == 1}}">
+              <view class='status-base status-borrowed'>在用</view>
+            </view>
+            <view wx:elif="{{item.status==2}}">
+              <view class='status-base status-returning'>维修</view>
+            </view>
+            <view wx:elif="{{item.status==3}}">
+              <view class='status-base status-normal'>维修</view>
+            </view>
+            <view wx:elif="{{item.status == 'scrapped'}}"><view class='status-base' style="background-color:#999; color:white;">已报废</view></view>
+            <view wx:elif="{{item.status == 'under_repair'}}"><view class='status-base' style="background-color:#e6a23c; color:white;">维修中</view></view>
+            <view wx:elif="{{item.status == 'in_use'}}"><view class='status-base' style="background-color:#e6a23c; color:white;">在用</view></view>
+            <view wx:elif="{{!item.status || item.status==0 || item.status=='in_stock'}}"><view class='status-base status-normal'>闲置</view></view>
+          </view>
+        </view>
+
+        <view style='color:#666;margin:8px;padding:4px;font-size:13px;'>
+          <view class='detail-label'>设备型号：{{item.model}}</view>
+          <view class='detail-label'>设备编号：{{item.id}}</view>
+          <view class='detail-label'>设备价格：{{item.price}}</view>
+
+          <view class="admin-actions" style="display: flex; justify-content: flex-end; margin-top: 10px; border-top: 1rpx solid #eee; padding-top: 10px;">
+            <button class="btn-edit" size="mini" type="primary" plain 
+              catchtap="handleEdit" data-item="{{item}}" style="margin-right: 10px;">修改信息</button>
+            <button class="btn-delete" size="mini" type="warn" plain 
+              catchtap="handleDelete" data-id="{{item.id}}" data-name="{{item.name}}">删除设备</button>
+          </view>
+          
+          </view>
+      </view>
+    </block>
+  </view>
+
+  <view class='float-view'>
+    <view class='scan-btn' bindtap='scanClick'>
+      <image class='scan-image' src='../images/scan.png'></image>
+      <view class='scan-text'>扫码识别</view>
+    </view>
+  </view>
+</view>

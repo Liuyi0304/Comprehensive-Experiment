@@ -1,15 +1,15 @@
 package com.example.labequipment.service;
 
-import com.example.labequipment.dto.LoginDTO;
-import com.example.labequipment.dto.UserAddDTO;
-import com.example.labequipment.dto.UserUpdateDTO;
-import com.example.labequipment.dto.UserVO;
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.labequipment.dto.*;
 import com.example.labequipment.entity.User;
-
 import java.util.List;
 import java.util.Map;
 
-public interface IUserService {
+/**
+ * 接口必须 extends IService<实体类>
+ */
+public interface IUserService extends IService<User> {
     // 登录
     Map<String, Object> login(LoginDTO dto);
 
@@ -25,8 +25,6 @@ public interface IUserService {
     // 删除用户
     void deleteUser(Long id);
 
-    // 重置密码 (通常重置为默认密码，如 123456)
+    // 重置密码
     void resetPassword(Long id);
-
-    User getById(Long id);
 }

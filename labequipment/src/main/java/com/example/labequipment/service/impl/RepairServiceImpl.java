@@ -1,6 +1,7 @@
 package com.example.labequipment.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.labequipment.common.exception.CustomException;
 import com.example.labequipment.dto.RepairRecordDTO;
@@ -98,8 +99,6 @@ public class RepairServiceImpl extends ServiceImpl<RepairRecordMapper, RepairRec
 
         record.setStatus("in_progress");
         this.updateById(record);
-
-
     }
 
 
@@ -175,6 +174,8 @@ public class RepairServiceImpl extends ServiceImpl<RepairRecordMapper, RepairRec
         }).collect(Collectors.toList());
     }
 
+
+
     private void populateDetails(List<RepairRecord> list) {
         for (RepairRecord record : list) {
             Device d = deviceMapper.selectById(record.getDeviceId());
@@ -187,5 +188,100 @@ public class RepairServiceImpl extends ServiceImpl<RepairRecordMapper, RepairRec
                 record.setReporterName(u.getUsername());
             }
         }
+    }
+
+    @Override
+    public List<RepairRecordVO> getWRepairList(Long userId, String keyword) {
+        // 1. 直接根据传入的 userId 获取用户信息，不再调用 StpUtil
+        User user = userMapper.selectById(userId);
+        if (user == null) {
+            throw new CustomException("用户信息不存在");
+        }
+
+        LambdaQueryWrapper<RepairRecord> wrapper = new LambdaQueryWrapper<>();
+
+        // --- 核心修改：只查询待审批状态的记录 ---
+        wrapper.eq(RepairRecord::getStatus, "reported");
+
+        // 2. 数据隔离逻辑：非管理员只能看到自己实验室的报修
+        if (!"admin".equals(user.getRole())) {
+            // 查询该用户所属实验室的所有设备 ID
+            List<Long> labDeviceIds = deviceMapper.selectList(
+                    new LambdaQueryWrapper<Device>().eq(Device::getLabId, user.getLabId())
+            ).stream().map(Device::getId).collect(Collectors.toList());
+
+            if (labDeviceIds.isEmpty()) {
+                return new ArrayList<>();
+            }
+            wrapper.in(RepairRecord::getDeviceId, labDeviceIds);
+        }
+
+        // 3. 关键词过滤
+        if (StringUtils.hasText(keyword)) {
+            wrapper.like(RepairRecord::getDescription, keyword);
+        }
+
+        // 4. 排序：最新的报修排在前面
+        wrapper.orderByDesc(RepairRecord::getReportedTime);
+
+        // 5. 查询结果并填充 VO 字段（如设备名、申请人名等）
+        List<RepairRecord> list = this.list(wrapper);
+        populateDetails(list); // 确保你的 populateDetails 方法内部也没有使用 StpUtil
+
+        // 6. 转换为 VO 返回
+        return list.stream().map(record -> {
+            RepairRecordVO vo = new RepairRecordVO();
+            BeanUtils.copyProperties(record, vo);
+            return vo;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<RepairRecord> getTasksByHandler(Long handlerId) {
+        // 1. 先通过 handlerId 找到这个管理员所在的实验室 ID
+        // 假设你的 User 实体类中有 labId 字段
+        User manager = userMapper.selectById(handlerId);
+        if (manager == null || manager.getLabId() == null) {
+            return new ArrayList<>();
+        }
+        Long targetLabId = manager.getLabId();
+
+        // 2. 找到该实验室下的所有设备 ID 列表
+        List<Long> deviceIds = deviceMapper.selectList(new QueryWrapper<Device>()
+                        .eq("lab_id", targetLabId))
+                .stream()
+                .map(Device::getId)
+                .collect(Collectors.toList());
+
+        if (deviceIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 3. 查询报修记录：设备 ID 在上述列表中，且状态为待处理或维修中
+        QueryWrapper<RepairRecord> wrapper = new QueryWrapper<>();
+        wrapper.in("device_id", deviceIds)
+                .in("status", "assigned", "in_progress")
+                .orderByDesc("reported_time");
+
+        List<RepairRecord> list = this.list(wrapper);
+
+        // 4. 补全前端展示所需的非数据库字段
+        for (RepairRecord record : list) {
+            // 填充设备信息
+            Device device = deviceMapper.selectById(record.getDeviceId());
+            if (device != null) {
+                record.setDeviceName(device.getName());
+                record.setDeviceAssetNumber(device.getAssetNumber());
+            }
+
+            // 填充报修人姓名
+            User reporter = userMapper.selectById(record.getReporterId());
+            if (reporter != null) {
+                // 确保你的 User 类有 getRealName 方法，RepairRecord 有 setReporterName 方法
+                record.setReporterName(reporter.getRealName());
+            }
+        }
+
+        return list;
     }
 }

@@ -30,7 +30,6 @@ public class DeviceController {
     private final DeviceMapper deviceMapper;
 
     // ================== 基础设备接口 ==================
-
     /**
      * ✅ 修正：查询设备列表
      * 1. 接收 DeviceQueryDTO (前端传来的搜索条件)

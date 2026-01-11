@@ -13,4 +13,6 @@ public interface IUsageRecordService extends IService<UsageRecord> {
     void endUsage(Long recordId, Long userId);
     // 获取使用列表
     List<UsageRecord> getUsageList(String keyword);
+
+    void endUsageByDevice(Long deviceId, Long userId);
 }

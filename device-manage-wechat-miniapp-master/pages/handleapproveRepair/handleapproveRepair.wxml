@@ -1,0 +1,54 @@
+<view class='page__bd_spacing' style='margin-top:100rpx;'>
+  
+  <view class="weui-cells__title title {{repairTasks.length == 0 ? 'hide' : ''}}">
+    维修任务中心，共{{repairTasks.length}}件
+  </view>
+
+  <view class='empty-base {{ repairTasks.length == 0 ? "empty-show" : "empty-hide"}}'>
+    <image class='empty-image' src='../images/empty1.png'></image>
+    <view class='empty-desc'>暂无需要处理的维修任务</view>
+  </view>
+
+  <block wx:for="{{repairTasks}}" wx:key="id">
+    <view class="kind-list__item approval-card">
+      
+      <view class="card-header">
+        <view class="header-left">
+          <image src="../images/device_other.png" class="item-logo"></image>
+          <text class="device-name">{{item.deviceName}}</text>
+        </view>
+        <view class="status-tag {{item.status === 'assigned' ? 'tag-todo' : 'tag-doing'}}">
+          {{item.status === 'assigned' ? '待处理' : '维修中'}}
+        </view> 
+      </view>
+
+      <view class="card-content">
+        <view class="info-row">
+          <text class="info-label">资产编号：</text>
+          <text class="info-value">{{item.deviceAssetNumber || item.deviceId}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">报修人：</text>
+          <text class="info-value highlighted">{{item.reporterName}}</text>
+        </view>
+        <view class="info-row reason-box">
+          <text class="info-label">故障描述：</text>
+          <text class="info-value reason-text">{{item.description || '无描述'}}</text>
+        </view>
+      </view>
+
+      <view class="card-footer">
+        <view class="action-btns">
+          <button wx:if="{{item.status === 'assigned'}}" 
+            class="btn-start" size="mini" 
+            catchtap="handleStartRepair" data-id="{{item.id}}" data-name="{{item.deviceName}}">开始处理</button>
+          
+          <button wx:if="{{item.status === 'in_progress'}}" 
+            class="btn-finish" size="mini" type="primary"
+            catchtap="handleFinishRepair" data-id="{{item.id}}" data-name="{{item.deviceName}}">维修完成</button>
+        </view>
+      </view>
+      
+    </view>
+  </block>
+</view>

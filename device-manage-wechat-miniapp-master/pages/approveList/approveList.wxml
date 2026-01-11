@@ -1,0 +1,52 @@
+<view class='page__bd_spacing' style='margin-top:100rpx;'>
+  
+  <view class="weui-cells__title title {{devices.length == 0 ? 'hide' : ''}}">
+    审批设备，共{{devices.length}}台
+  </view>
+
+  <view class='empty-base {{ devices.length == 0 ? "empty-show" : "empty-hide"}}'>
+    <image class='empty-image' src='../images/empty1.png'></image>
+    <view class='empty-desc'>暂无待处理的设备报废申请</view>
+  </view>
+
+  <block wx:for="{{devices}}" wx:key="id" wx:for-index="index">
+    <view class="kind-list__item approval-card" wx:if="{{item.status === 'pending'}}">
+      
+      <view class="card-header">
+        <view class="header-left">
+          <image src="{{'../images/' + (brandMap[item.brand] || 'device_other') + '.png'}}" class="item-logo"></image>
+          <text class="device-name">{{item.deviceName}}</text>
+        </view>
+        <view class="status-tag tag-warning">等待审批</view> 
+      </view>
+
+      <view class="card-content">
+        <view class="info-row">
+          <text class="info-label">资产编号：</text>
+          <text class="info-value">{{item.deviceAssetNumber}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">申请人：</text>
+          <text class="info-value highlighted">{{item.applicantName || '未知用户'}}</text>
+        </view>
+        <view class="info-row reason-box">
+          <text class="info-label">申请理由：</text>
+          <text class="info-value reason-text">{{item.reason || '未填写理由'}}</text>
+        </view>
+        <view class="info-row" style="font-size: 11px; color: #999; margin-top: 5px;">
+          <text>申请时间：{{item.createdAt}}</text>
+        </view>
+      </view>
+
+      <view class="card-footer">
+        <view class="action-btns">
+          <button class="btn-refuse" size="mini" 
+            catchtap="handleReject" data-id="{{item.id}}" data-name="{{item.deviceName}}">拒绝申请</button>
+          <button class="btn-approve" size="mini" type="primary" 
+            catchtap="handleApprove" data-id="{{item.id}}" data-name="{{item.deviceName}}">同意报废</button>
+        </view>
+      </view>
+      
+    </view>
+  </block>
+</view>
