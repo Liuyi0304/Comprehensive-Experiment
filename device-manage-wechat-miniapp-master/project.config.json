@@ -28,7 +28,7 @@
   },
   "compileType": "miniprogram",
   "libVersion": "1.9.91",
-  "appid": "wx3f8fc936d4efaf55",
+  // "appid": "",
   "projectname": "%E8%AE%BE%E5%A4%87%E7%AE%A1%E7%90%86",
   "isGameTourist": false,
   "condition": {
